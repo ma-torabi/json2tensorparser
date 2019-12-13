@@ -1,4 +1,4 @@
 # json2tensorparser
 
-The aim of this project is to parse json file and convert in to vectorize sample (Tensor)
+This project aims to parse the JSON file and convert it to a vector format.
 This code can be used in data classification and machine learing
