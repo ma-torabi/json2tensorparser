@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
 import json
+import glob
+import os
 
 # Global Vaiables
 vector = [[]]
@@ -30,30 +32,31 @@ def getKeys( array, keyname, level, index):
 # Main Funtion
 def main():
     # Load json file(s)
-    with open('sample-data/1539866692_com.iconology.comics_MIRAGE-2019_traffic_dataset_labeled_biflows.json', 'r') as f:
-        array = json.load(f)
-    i = 0
-    vector[i].append('tuple')
+    path = 'sample-data/'
+    for filename in glob.glob(os.path.join(path, '*.json')):
+        with open(filename, 'r') as f:
+            array = json.load(f)
+            i = 0
+            vector[i].append('tuple')
 
-    for (key, value) in array.items():
-        vector.append([])
-        i += 1
-        vector[i].append(key)
-        # fill vector 
-        # per flow/packet information
-        for (keytype, valuetype) in value.items():
-            level = 0
-            keyname = ''
-            print(keytype)
-            #only check flow features
-            if (keytype == 'flow_features' or keytype == 'flow_metadata'):
-                getKeys(valuetype, keyname, level, i)
-    # print(vector)
+            for (key, value) in array.items():
+                vector.append([])
+                i += 1
+                vector[i].append(key)
+                # fill vector 
+                # per flow/packet information
+                for (keytype, valuetype) in value.items():
+                    level = 0
+                    keyname = ''
+                    #only check flow features
+                    if (keytype == 'flow_features' or keytype == 'flow_metadata'):
+                        getKeys(valuetype, keyname, level, i)
+            # print(vector)
 
-    new_path = 'sample-data/flow-result'
-    flow_result = open(new_path,'w')
-    for row in vector:
-        flow_result.write("%s\n" % row)
+            new_path = 'sample-data/flow-result'
+            flow_result = open(new_path,'w')
+            for row in vector:
+                flow_result.write("%s\n" % row)
 
 
 if __name__ == '__main__':
